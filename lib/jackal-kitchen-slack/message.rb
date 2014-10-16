@@ -32,7 +32,13 @@ module Jackal
       def format_message(payload)
         ref = payload.get(:data, :github, :head_commit, :id)
         repo = payload.get(:data, :github, :repository, :full_name)
-        {:message => payload.get(:data, :kitchen), :color => 'good'}
+        success = !payload.fetch(:data, :kitchen, :result, {}).values.detect do |v|
+          v.to_s == 'fail'
+        end
+        Smash.new(
+          :message => payload.get(:data, :kitchen),
+          :color => success ? 'green' : 'red'
+        )
       end
 
       def format_link(uri,anchor)
