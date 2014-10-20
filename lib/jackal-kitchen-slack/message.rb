@@ -37,7 +37,7 @@ module Jackal
         end
         Smash.new(
           :message => payload.get(:data, :kitchen),
-          :color => success ? 'green' : 'red'
+          :color => success ? config.fetch(:colors, :success, 'good') : config.fetch(:colors, :failure, 'danger')
         )
       end
 
