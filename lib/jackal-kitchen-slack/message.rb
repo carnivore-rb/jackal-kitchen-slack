@@ -32,7 +32,7 @@ module Jackal
       def format_message(payload)
         ref = payload.get(:data, :github, :head_commit, :id)
         repo = payload.get(:data, :github, :repository, :full_name)
-        success = payload.get(:data, :kitchen, :judge, :judgement)
+        success = payload.get(:data, :kitchen, :judge, :decision)
         Smash.new(
           :message => payload.get(:data, :kitchen),
           :color => success ? config.fetch(:colors, :success, 'good') : config.fetch(:colors, :failure, 'danger'),
