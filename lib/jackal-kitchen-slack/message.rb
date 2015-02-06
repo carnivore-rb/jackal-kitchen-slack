@@ -33,8 +33,21 @@ module Jackal
         ref = payload.get(:data, :github, :head_commit, :id)
         repo = payload.get(:data, :github, :repository, :full_name)
         success = payload.get(:data, :kitchen, :judge, :decision)
+
+        kitchen_message = []
+
+        if success
+          kitchen_message << "Good news, all tests passed for #{repo}"
+        else
+          kitchen_message << "Sorry, there were some test failures for #{repo}"
+          failure_reasons = payload.get(:data, :kitchen, :judge, :reasons)
+          failure_reasons.each do |reason|
+            kitchen_message << "#{reason} failed"
+          end
+        end
+
         Smash.new(
-          :message => payload.get(:data, :kitchen),
+          :message => kitchen_message.join("\n"),
           :color => success ? config.fetch(:colors, :success, 'good') : config.fetch(:colors, :failure, 'danger'),
           :judgement => {:success => success}
         )
