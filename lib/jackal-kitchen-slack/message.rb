@@ -47,6 +47,7 @@ module Jackal
         end
 
         Smash.new(
+          :description => "Test Kitchen results",
           :message => kitchen_message.join("\n"),
           :color => success ? config.fetch(:colors, :success, 'good') : config.fetch(:colors, :failure, 'danger'),
           :judgement => {:success => success}
